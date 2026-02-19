@@ -1,6 +1,6 @@
 {
   "name": "graphql-infinite-query",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "React hook and select component for GraphQL infinite scroll / pagination with Apollo Client",
   "keywords": [
     "graphql",
@@ -40,7 +40,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "release": "pnpm build && npm publish --access public"
   },
   "peerDependencies": {
     "react": ">=18",

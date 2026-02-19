@@ -159,10 +159,33 @@ onSearchImmediate('John');
 
 A ready-made searchable dropdown that wires `useInfiniteLoadQuery` to an input and a scrollable list. No extra state needed on your end.
 
+### Type parameters
+
+```
+InfiniteSelect<ItemDataType, QueryType>
+```
+
+| Type parameter | Description |
+|---|---|
+| `ItemDataType` | The shape of **each item** in the list — what `getItems` returns per element. This is the type you receive in `getKey`, `renderItem`, and `onChange`. |
+| `QueryType` | The shape of the **full API response** — what Apollo returns for the entire query. This is what `getItems` and `getPagination` receive as their argument. |
+
+**Example types for a `getUsers` query:**
+
+```ts
+// The full API response
+type UserItemReResponse = {
+  getUsers: {
+    pagination: { pageNumber: number; pageSize: number; total: number; totalPage: number };
+    items: GetUsersQueryResponse[];
+  };
+};
+
+
 ```tsx
 import { InfiniteSelect } from 'graphql-infinite-query';
 
-<InfiniteSelect
+<InfiniteSelect<UserItemReResponse, GetUsersQueryResponse>
   query={GET_USERS}
   clientInstance={client}
   getItems={(data) => data.getUsers.items}

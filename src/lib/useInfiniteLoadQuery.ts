@@ -235,6 +235,7 @@ export function useInfiniteLoadQuery<
   // ---------------------------------------------------------------------------
   const isFetchingNextPage = networkStatus === NetworkStatus.fetchMore;
 
+
   const items = data ? getItems(data) : [];
   const pagination = data ? getPagination(data) : EMPTY_PAGINATION;
   const hasNextPage = pagination.pageNumber < pagination.totalPage;
@@ -244,6 +245,7 @@ export function useInfiniteLoadQuery<
   // ---------------------------------------------------------------------------
   const loadNextPage = useCallback(() => {
     if (!hasNextPage || isFetchingNextPage || isFetching) return;
+
 
     fetchMore({
       variables: buildVariables(
@@ -260,10 +262,22 @@ export function useInfiniteLoadQuery<
 
         const merged = mergeItems(prevItems, nextItems);
 
-        return patchQueryResult(prev, fetchMoreResult, merged, nextPagination);
+        return patchQueryResult(fetchMoreResult, merged, nextPagination);
       }) as any, // eslint-disable-line @typescript-eslint/no-explicit-any
     });
-  }, [hasNextPage, isFetchingNextPage, isFetching, fetchMore, buildVariables, pagination.pageSize, pagination.pageNumber, searchValue, getItems, getPagination, mergeItems]);
+  }, [
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    fetchMore,
+    buildVariables,
+    pagination.pageSize,
+    pagination.pageNumber,
+    searchValue,
+    getItems,
+    getPagination,
+    mergeItems,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Search handlers
@@ -312,7 +326,6 @@ export function useInfiniteLoadQuery<
 }
 
 function patchQueryResult<TQuery extends object, TData>(
-  prev: TQuery,
   next: TQuery,
   mergedItems: TData[],
   nextPagination: PaginationResponse,
