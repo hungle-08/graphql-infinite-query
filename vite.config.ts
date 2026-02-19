@@ -31,12 +31,22 @@ export default defineConfig({
       fileName: format => `index.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
+      // Externalize every peer dep AND lodash-es so none of them are
+      // bundled into the output. Consumers provide them from their own
+      // node_modules (peer deps) or npm installs them alongside this
+      // package (lodash-es, a regular dependency).
       external: [
         'react',
         'react-dom',
         'react/jsx-runtime',
         '@apollo/client',
         'graphql',
+        'lodash-es',
+        'class-variance-authority',
+        'clsx',
+        /^lucide-react/,
+        /^radix-ui/,
+        'tailwind-merge',
       ],
       output: {
         globals: {

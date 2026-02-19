@@ -10,21 +10,41 @@ import {
 import { useInfiniteLoadQuery } from '../lib/useInfiniteLoadQuery';
 import { useState } from 'react';
 import { SearchIcon } from 'lucide-react';
-import { type Pagination } from '../lib/type';
+import { type Pagination, type PaginationResponse } from '../lib/type';
 import { checkHasBottomReached } from '../lib/checkHasBottomReached';
 
-export type InfiniteSelectProps<Query, QueryVariables, TData> = {
+export type InfiniteSelectProps<TQuery, TQueryVariables, TData> = {
   /**
    * The GraphQL query document to execute.
    * Accepts a plain `DocumentNode` or a fully-typed `TypedDocumentNode`.
    */
-  query: DocumentNode | TypedDocumentNode<Query, QueryVariables>;
+  query: DocumentNode | TypedDocumentNode<TQuery, TQueryVariables>;
+
+  /**
+   * Extracts the list of items from the raw query response.
+   * Decouples the component from any specific API response shape.
+   *
+   * @example
+   * ```ts
+   * getItems={data => data.getUsers.items}
+   * getItems={data => data.users.edges.map(e => e.node)}
+   * ```
+   */
+  getItems: (data: TQuery) => TData[];
+
+  /**
+   * Extracts pagination metadata from the raw query response.
+   *
+   * @example
+   * ```ts
+   * getPagination={data => data.getUsers.pagination}
+   * ```
+   */
+  getPagination: (data: TQuery) => PaginationResponse;
 
   /**
    * Factory that builds the query variables from the current pagination state
    * and the optional search string.
-   *
-   * If omitted, the hook forwards `{ pagination, filter: search }` by default.
    *
    * @example
    * ```ts
@@ -34,12 +54,11 @@ export type InfiniteSelectProps<Query, QueryVariables, TData> = {
    * })}
    * ```
    */
-  variables?: (pagination: Pagination, search?: string | null) => QueryVariables;
+  variables?: (pagination: Pagination, search?: string | null) => TQueryVariables;
 
   /**
    * Derives a stable React key from each item.
-   * **Required** — without this, all object items produce the same key
-   * (`"[object Object]"`), breaking list reconciliation.
+   * **Required** — without this, all object items produce the same key.
    *
    * @example
    * ```tsx
@@ -72,63 +91,48 @@ export type InfiniteSelectProps<Query, QueryVariables, TData> = {
 
   /**
    * When `true`, the input and dropdown are non-interactive.
-   *
    * @default false
    */
   disabled?: boolean;
 
   /**
-   * Text shown in the dropdown when the query returns an empty list.
-   *
+   * React Node shown in the dropdown when the query returns an empty list.
    * @default 'No Data'
    */
-  emptyText?: string;
+  emptyText?: React.ReactNode;
 
   /**
    * Placeholder text displayed inside the search input.
-   *
-   * @default undefined
    */
   placeholder?: string;
 
   /**
    * Distance in pixels from the bottom of the dropdown list at which the
-   * next page is fetched. Increase this to load the next page earlier.
-   * Passed directly to `checkHasBottomReached`.
-   *
+   * next page is fetched. Passed directly to `checkHasBottomReached`.
    * @default 30
    */
   bottomOffset?: number;
 
   /**
    * When `true`, the query is not executed.
-   * Useful for conditional fetching (e.g. waiting for a required parent value).
-   * Forwarded to `useInfiniteLoadQuery`.
-   *
    * @default false
    */
   skip?: boolean;
 
   /**
    * Controls how Apollo reads from and writes to the cache.
-   * Forwarded to `useInfiniteLoadQuery`.
-   *
    * @default 'cache-first'
    */
   fetchPolicy?: QueryHookOptions['fetchPolicy'];
 
   /**
    * Override the starting pagination when the hook first mounts.
-   * Forwarded to `useInfiniteLoadQuery`.
-   *
    * @default { pageNumber: 1, pageSize: 10 }
    */
   defaultPagination?: Pagination;
 
   /**
    * Debounce delay in milliseconds applied to the search input.
-   * Forwarded to `useInfiniteLoadQuery`.
-   *
    * @default 500
    */
   debounceTime?: number;
@@ -140,6 +144,8 @@ export function InfiniteSelect<
   TQueryVariables extends OperationVariables = OperationVariables,
 >({
   query,
+  getItems,
+  getPagination,
   variables,
   getKey,
   renderItem,
@@ -156,12 +162,14 @@ export function InfiniteSelect<
 }: InfiniteSelectProps<TQuery, TQueryVariables, TData>) {
   const [open, setOpen] = useState(false);
 
-  const { data, loading, loadNextPage, onSearch } = useInfiniteLoadQuery<
+  const { data, isFetching,isFetchingNextPage, loadNextPage, onSearch } = useInfiniteLoadQuery<
     TQuery,
     TQueryVariables,
     TData
   >({
     query,
+    getItems,
+    getPagination,
     variables,
     clientInstance,
     skip,
@@ -219,7 +227,7 @@ export function InfiniteSelect<
               </Button>
             ))}
 
-            {data.length === 0 && !loading && (
+            {data.length === 0 && !isFetching && !isFetchingNextPage &&(
               <div className="w-full h-full flex items-center justify-center">
                 {emptyText}
               </div>

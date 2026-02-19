@@ -1,18 +1,30 @@
 {
   "name": "graphql-infinite-query",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "React hook and select component for GraphQL infinite scroll / pagination with Apollo Client",
   "keywords": [
     "graphql",
     "apollo",
-    "infinite-load-query",
-    "InfiniteSelect",
-    "useInfiniteLoadQuery",
+    "apollo-client",
+    "infinite-scroll",
+    "infinite-query",
+    "pagination",
+    "react-hook",
+    "infinite-select",
     "react"
   ],
   "author": "hungle.dev",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hungle-08/graphql-infinite-query"
+  },
+  "homepage": "https://github.com/hungle-08/graphql-infinite-query#readme",
+  "bugs": {
+    "url": "https://github.com/hungle-08/graphql-infinite-query/issues"
+  },
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -34,33 +46,45 @@
     "react": ">=18",
     "react-dom": ">=18",
     "@apollo/client": ">=3",
-    "graphql": ">=16"
+    "graphql": ">=16",
+    "class-variance-authority": ">=0.7",
+    "clsx": ">=2",
+    "lucide-react": ">=0.400",
+    "radix-ui": ">=1",
+    "tailwind-merge": ">=3"
+  },
+  "peerDependenciesMeta": {
+    "class-variance-authority": { "optional": true },
+    "clsx": { "optional": true },
+    "lucide-react": { "optional": true },
+    "radix-ui": { "optional": true },
+    "tailwind-merge": { "optional": true }
   },
   "dependencies": {
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lodash-es": "^4.17.23",
-    "@types/lodash-es": "^4.17.12",
-    "lucide-react": "^0.574.0",
-    "radix-ui": "^1.4.3",
-    "tailwind-merge": "^3.4.1"
+    "lodash-es": "^4.17.23"
   },
   "devDependencies": {
     "@apollo/client": "^3.11.11",
     "@eslint/js": "^9.39.1",
     "@tailwindcss/vite": "^4.1.18",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "babel-plugin-react-compiler": "^1.0.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "graphql": "^16.9.0",
+    "lucide-react": "^0.574.0",
+    "radix-ui": "^1.4.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "tailwind-merge": "^3.4.1",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.48.0",
