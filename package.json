@@ -1,0 +1,70 @@
+{
+  "name": "graphql-infinite-query",
+  "version": "0.1.1",
+  "description": "React hook and select component for GraphQL infinite scroll / pagination with Apollo Client",
+  "keywords": [
+    "graphql",
+    "apollo",
+    "infinite-load-query",
+    "InfiniteSelect",
+    "useInfiniteLoadQuery",
+    "react"
+  ],
+  "author": "hungle.dev",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "lint": "eslint ."
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "@apollo/client": ">=3",
+    "graphql": ">=16"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lodash-es": "^4.17.23",
+    "@types/lodash-es": "^4.17.12",
+    "lucide-react": "^0.574.0",
+    "radix-ui": "^1.4.3",
+    "tailwind-merge": "^3.4.1"
+  },
+  "devDependencies": {
+    "@apollo/client": "^3.11.11",
+    "@eslint/js": "^9.39.1",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "graphql": "^16.9.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.1.18",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "vite": "^7.3.1",
+    "vite-plugin-dts": "^4.5.4"
+  }
+}
